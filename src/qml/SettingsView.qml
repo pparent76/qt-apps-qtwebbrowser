@@ -189,7 +189,7 @@ Rectangle {
     ListView {
         id: listView
         anchors {
-            top: uiButtons.top
+            top: uiButtons.bottom
             right: parent.right
             left: parent.left
             bottom: parent.bottom
