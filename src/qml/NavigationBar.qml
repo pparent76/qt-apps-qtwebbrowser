@@ -40,6 +40,7 @@ ToolBar {
 
     property alias addressBar: urlBar
     property Item webView: null
+    property bool moreButtons: false
 
     onWebViewChanged: {
 
@@ -280,6 +281,7 @@ ToolBar {
             height: parent.height
             color: uiColor
         }
+        
 
         UIButton {
             id: cancelButton
@@ -304,13 +306,110 @@ ToolBar {
             height: parent.height
             color: uiSeparatorColor
         }
+        
+            UIButton {
+            id: homeButton
+            source: "icons/Btn_Home.png"
+            visible:moreButtons
+            color: uiColor
+            highlightColor: buttonPressedColor
+            onClicked: {
+               moreButtons = false 
+                if (homeScreen.state == "disabled" || homeScreen.state == "edit") {
+                    homeScreen.messageBox.state = "disabled"
+                    homeScreen.state = "enabled"
+                    homeScreen.forceActiveFocus()
+                } else if (homeScreen.state != "disabled") {
+                    homeScreen.state = "disabled"
+                }
+            }
+        }
+        Rectangle {
+            width: 1
+            height: parent.height
+            color: uiSeparatorColor
+        }
+        UIButton {
+            id: pageViewButton
+            visible:moreButtons            
+            source: "icons/Btn_Tabs.png"
+            color: uiColor
+            highlightColor: buttonPressedColor
+            onClicked: {     
+               moreButtons = false 
+                if (tabView.viewState == "list") {
+                    tabView.viewState = "page"
+                } else {
+                    tabView.get(tabView.currentIndex).item.webView.takeSnapshot()
+                    homeScreen.state = "disabled"
+                    tabView.viewState = "list"
+                }
+            }
+            Text {
+                anchors {
+                    centerIn: parent
+                    verticalCenterOffset: 4
+                }
+
+                text: tabView.count
+                font.family: defaultFontFamily
+                font.pixelSize: 16
+                font.weight: Font.DemiBold
+                color: "white"
+            }
+        }
+        Rectangle {
+            width: 1
+            height: parent.height
+            color: uiSeparatorColor
+        }
+        UIButton {
+            id: bookmarksButton
+            color: uiColor
+            highlightColor: buttonPressedColor
+            enabled: true
+            visible:moreButtons            
+            property bool bookmarked: false
+            source: bookmarked ? "icons/Btn_Bookmark_Checked.png" : "icons/Btn_Bookmarks.png"
+            onClicked: {
+                  moreButtons = false
+                var icon = webView.loading ? "" : webView.icon
+                bookmarked = true                  
+                var idx = homeScreen.contains(webView.url.toString())
+                if (idx !== -1) {
+                    homeScreen.remove("", idx)
+                    return
+                }
+                var count = homeScreen.count
+                homeScreen.add(webView.title, webView.url, icon, AppEngine.fallbackColor())
+                if (count < homeScreen.count)
+                    bookmarked = true
+            }
+            Component.onCompleted: refresh()
+        }
+        
+        Rectangle {
+            width: 1
+            height: parent.height
+            color: uiSeparatorColor
+        }
+        
         UIButton {
             id: settingsButton
             source: "icons/Btn_Settings.png"
             color: uiColor
             highlightColor: buttonPressedColor
             onClicked: {
+                if ( ! moreButtons )
+                {
+                 moreButtons = true 
+                 return
+                }
+                else
+                {
                 settingsView.state = "enabled"
+                moreButtons = false 
+                }
             }
         }
     }
