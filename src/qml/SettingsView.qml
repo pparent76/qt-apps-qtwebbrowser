@@ -33,6 +33,8 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import Qt.labs.settings 1.0
 
+import "assets"
+
 import WebBrowser 1.0
 Rectangle {
     id: root
