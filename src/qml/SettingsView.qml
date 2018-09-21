@@ -101,6 +101,7 @@ Rectangle {
     }
 
     RowLayout {
+        id: uiButtons
         height: toolBarSize
         anchors {
             top: parent.top
@@ -187,7 +188,12 @@ Rectangle {
         
     ListView {
         id: listView
-        anchors.fill: parent
+        anchors {
+            top: uiButtons.top
+            right: parent.right
+            left: parent.left
+            bottom: parent.bottom
+        }
         model: listModel
         delegate: Rectangle {
             height: 100
