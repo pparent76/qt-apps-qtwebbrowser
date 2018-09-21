@@ -98,6 +98,91 @@ Rectangle {
         id: listModel
     }
 
+    RowLayout {
+        height: toolBarSize
+        anchors {
+            top: parent.top
+            right: parent.right
+            left: parent.left
+        }
+        spacing: 0
+            UIButton {
+            id: homeButton
+            source: "icons/Btn_Home.png"
+            color: uiColor
+            highlightColor: buttonPressedColor
+            onClicked: {
+                if (homeScreen.state == "disabled" || homeScreen.state == "edit") {
+                    homeScreen.messageBox.state = "disabled"
+                    homeScreen.state = "enabled"
+                    homeScreen.forceActiveFocus()
+                } else if (homeScreen.state != "disabled") {
+                    homeScreen.state = "disabled"
+                }
+            }
+        }
+        Rectangle {
+            width: 1
+            height: parent.height
+            color: uiSeparatorColor
+        }
+        UIButton {
+            id: pageViewButton
+            source: "icons/Btn_Tabs.png"
+            color: uiColor
+            highlightColor: buttonPressedColor
+            onClicked: {
+                if (tabView.viewState == "list") {
+                    tabView.viewState = "page"
+                } else {
+                    tabView.get(tabView.currentIndex).item.webView.takeSnapshot()
+                    homeScreen.state = "disabled"
+                    tabView.viewState = "list"
+                }
+            }
+            Text {
+                anchors {
+                    centerIn: parent
+                    verticalCenterOffset: 4
+                }
+
+                text: tabView.count
+                font.family: defaultFontFamily
+                font.pixelSize: 16
+                font.weight: Font.DemiBold
+                color: "white"
+            }
+        }
+        Rectangle {
+            width: 1
+            height: parent.height
+            color: uiSeparatorColor
+        }
+        UIButton {
+            id: bookmarksButton
+            color: uiColor
+            highlightColor: buttonPressedColor
+            enabled: urlBar.text != "" && !settingsView.privateBrowsingEnabled
+            property bool bookmarked: false
+            source: bookmarked ? "icons/Btn_Bookmark_Checked.png" : "icons/Btn_Bookmarks.png"
+            onClicked: {
+                if (!webView)
+                    return
+                var icon = webView.loading ? "" : webView.icon
+                var idx = homeScreen.contains(webView.url.toString())
+                if (idx !== -1) {
+                    homeScreen.remove("", idx)
+                    return
+                }
+                var count = homeScreen.count
+                homeScreen.add(webView.title, webView.url, icon, AppEngine.fallbackColor())
+                if (count < homeScreen.count)
+                    bookmarked = true
+            }
+            Component.onCompleted: refresh()
+        }
+    }
+        
     ListView {
         id: listView
         anchors.fill: parent
