@@ -39,7 +39,6 @@ import WebBrowser 1.0
 Rectangle {
     id: root
     
-    property Item webView: null
     property bool privateBrowsingEnabled: appSettings[0].active
     property bool httpDiskCacheEnabled: appSettings[1].active
     property bool autoLoadImages: appSettings[2].active

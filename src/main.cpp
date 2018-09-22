@@ -31,15 +31,13 @@
 #include "navigationhistoryproxymodel.h"
 #include "touchtracker.h"
 
-#if defined(DESKTOP_BUILD)
-#include "touchmockingapplication.h"
-#endif
-
 #include <QGuiApplication>
 #include <QQmlContext>
 #include <QQmlEngine>
 #include <QQuickView>
 #include <QtWebEngine/qtwebengineglobal.h>
+#include <QtWebEngine>
+#include <QWebEngineProfile>
 
 static QObject *engine_factory(QQmlEngine *engine, QJSEngine *scriptEngine)
 {
@@ -71,18 +69,17 @@ int main(int argc, char **argv)
 
     int qAppArgCount = qargv.size();
 
-#if defined(DESKTOP_BUILD)
-    TouchMockingApplication app(qAppArgCount, qargv.data());
-#else
+        
     QGuiApplication app(qAppArgCount, qargv.data());
-#endif
+        
+    QtWebEngine::initialize();
 
+  
     qmlRegisterType<NavigationHistoryProxyModel>("WebBrowser", 1, 0, "SearchProxyModel");
     qmlRegisterType<TouchTracker>("WebBrowser", 1, 0, "TouchTracker");
     qmlRegisterSingletonType<AppEngine>("WebBrowser", 1, 0, "AppEngine", engine_factory);
 
-    QtWebEngine::initialize();
-
+  
     app.setOrganizationName("The Qt Company");
     app.setOrganizationDomain("qt.io");
     app.setApplicationName("qtwebbrowser");
@@ -96,13 +93,7 @@ int main(int argc, char **argv)
 
     QObject::connect(view.engine(), SIGNAL(quit()), &app, SLOT(quit()));
 
-#if defined(DESKTOP_BUILD)
-    view.show();
-    if (view.size().isEmpty())
-        view.setGeometry(0, 0, 800, 600);
-#else
-    view.showFullScreen();
-#endif
 
+    view.showMaximized();
     app.exec();
 }
