@@ -28,7 +28,7 @@ OTHER_FILES = \
     qml/Keyboard.qml \
     qml/Window.qml
 
-QT += qml quick webengine webenginewidgets
+QT += qml quick webengine
 
 RESOURCES += resources.qrc
 

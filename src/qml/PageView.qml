@@ -37,7 +37,6 @@ import QtGraphicalEffects 1.0
 import WebBrowser 1.0
 import "assets"
 
-    
 Rectangle {
     id: root
 

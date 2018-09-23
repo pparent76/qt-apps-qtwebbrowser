@@ -33,12 +33,10 @@ import QtQuick.Controls 1.4
 import QtQuick.Controls.Styles 1.4
 import Qt.labs.settings 1.0
 
-import "assets"
-
 import WebBrowser 1.0
 Rectangle {
     id: root
-    
+
     property bool privateBrowsingEnabled: appSettings[0].active
     property bool httpDiskCacheEnabled: appSettings[1].active
     property bool autoLoadImages: appSettings[2].active
@@ -99,10 +97,10 @@ Rectangle {
     ListModel {
         id: listModel
     }
-        
+
     ListView {
         id: listView
-        anchors.fill:parent;
+        anchors.fill: parent
         model: listModel
         delegate: Rectangle {
             height: 100

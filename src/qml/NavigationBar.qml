@@ -281,7 +281,6 @@ ToolBar {
             height: parent.height
             color: uiColor
         }
-        
 
         UIButton {
             id: cancelButton

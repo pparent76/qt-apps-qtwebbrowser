@@ -43,7 +43,6 @@ import "Utils.js" as Utils
 Item {
     id: browserWindow
 
- 
     property Item currentWebView: {
         return tabView.get(tabView.currentIndex) ? tabView.get(tabView.currentIndex).item.webView : null
     }
@@ -191,8 +190,6 @@ Item {
             return true
         }
         
-
-
         anchors {
             top: navigation.bottom
             left: parent.left
@@ -213,8 +210,6 @@ Item {
             tabView.page_view_url=url;
 
             navigation.load();
-            
-            console.log("PPPPPPP Getting url: "+url);
             
             if ( url == "" )
             {
