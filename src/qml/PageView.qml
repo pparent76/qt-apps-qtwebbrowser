@@ -107,7 +107,7 @@ Rectangle {
 
             WebEngineView {
                 id: webEngineView
-                url: "https://duckduckgo.com"
+                //url: "https://duckduckgo.com"
              
                 profile: WebEngineProfile{
                      httpUserAgent: "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 5 Build/LMY48B; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/43.0.2357.65 Safari/537.361"

@@ -59,13 +59,8 @@ static QObject *engine_factory(QQmlEngine *engine, QJSEngine *scriptEngine)
 
 int main(int argc, char **argv)
 {
-   signal(SIGINT,   SIG_IGN);
-   signal(SIGSEGV,  SIG_IGN); 
-   signal(SIGABRT,  SIG_IGN);  
-   signal(SIGIOT,   SIG_IGN);  
-   signal(SIGILL,   SIG_IGN);  
-   signal(SIGBUS,   SIG_IGN);  
-   
+       // register signal SIGINT and signal handler  
+   signal(SIGINT, signalHandler);  
     qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
 
     //do not use any plugins installed on the device

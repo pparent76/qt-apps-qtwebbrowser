@@ -374,6 +374,7 @@ ToolBar {
             onClicked: {
                   moreButtons = false
                 var icon = webView.loading ? "" : webView.icon
+                icon=icon.toString().replace("image://favicon/", "");              
                 bookmarked = true                  
                 var idx = homeScreen.contains(webView.url.toString())
                 if (idx !== -1) {

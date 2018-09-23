@@ -43,6 +43,7 @@ import "Utils.js" as Utils
 Item {
     id: browserWindow
 
+ 
     property Item currentWebView: {
         return tabView.get(tabView.currentIndex) ? tabView.get(tabView.currentIndex).item.webView : null
     }
@@ -189,6 +190,8 @@ Item {
                 return false
             return true
         }
+        
+
 
         anchors {
             top: navigation.bottom
@@ -208,6 +211,12 @@ Item {
             var url = AppEngine.initialUrl
 
             navigation.load();
+            
+            homeScreen.messageBox.state = "disabled"
+            homeScreen.state = "enabled"
+            homeScreen.forceActiveFocus()
+    
+       
         }
         onCurrentIndexChanged: {
             if (!tabView.get(tabView.currentIndex))
