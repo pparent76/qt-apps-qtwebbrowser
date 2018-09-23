@@ -83,6 +83,8 @@ public:
     Q_INVOKABLE QString fallbackColor();
     Q_INVOKABLE QString restoreSetting(const QString &name, const QString &defaultValue = QString());
     Q_INVOKABLE void saveSetting(const QString &name, const QString &value);
+    Q_INVOKABLE bool writeFile(const QString& source, const QString& data);
+    Q_INVOKABLE QString readFile(const QString& source);
 
 private:
     QSettings m_settings;

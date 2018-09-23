@@ -37,6 +37,7 @@ import QtGraphicalEffects 1.0
 import WebBrowser 1.0
 import "assets"
 
+    
 Rectangle {
     id: root
 
@@ -49,6 +50,7 @@ Rectangle {
     property alias count: pathView.count
 
     property string viewState: "page"
+    property string page_view_url: ""
 
     onViewStateChanged: {
         if (viewState == "page" || viewState == "fullscreen")
@@ -107,8 +109,8 @@ Rectangle {
 
             WebEngineView {
                 id: webEngineView
-                //url: "https://duckduckgo.com"
-             
+                url: parent.parent.page_view_url
+                
                 profile: WebEngineProfile{
                      httpUserAgent: "Mozilla/5.0 (Linux; Android 5.1.1; Nexus 5 Build/LMY48B; wv) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/43.0.2357.65 Safari/537.361"
                      persistentCookiesPolicy : WebEngineProfile.ForcePersistentCookies
@@ -140,7 +142,11 @@ Rectangle {
                 }
 
                 // Trigger a refresh to check if the new url is bookmarked.
-                onUrlChanged: navigation.refresh()
+                onUrlChanged: 
+                {
+                    AppEngine.writeFile("/tmp/qt-WebBrowser-last-url.txt",webEngineView.url)
+                    navigation.refresh()
+                }
 
 
                 settings.autoLoadImages: settingsView.autoLoadImages

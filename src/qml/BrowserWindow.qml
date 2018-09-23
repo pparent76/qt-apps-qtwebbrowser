@@ -208,13 +208,20 @@ Item {
                 return
 
             navigation.webView = tab.webView
-            var url = AppEngine.initialUrl
+            var url = AppEngine.readFile("/tmp/qt-WebBrowser-last-url.txt")
+            
+            tabView.page_view_url=url;
 
             navigation.load();
             
+            console.log("PPPPPPP Getting url: "+url);
+            
+            if ( url == "" )
+            {
             homeScreen.messageBox.state = "disabled"
             homeScreen.state = "enabled"
             homeScreen.forceActiveFocus()
+            }
     
        
         }

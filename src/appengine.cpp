@@ -33,6 +33,7 @@
 #include <QtCore/QStandardPaths>
 #include <QStringBuilder>
 #include <QCoreApplication>
+#include <QTextStream>
 
 AppEngine::AppEngine(QObject *parent)
     : QObject(parent)
@@ -105,3 +106,39 @@ void AppEngine::saveSetting(const QString &name, const QString &value)
     m_settings.setValue(name, value);
 }
 
+
+bool AppEngine::writeFile(const QString& source, const QString& data)
+    {
+        if (source.isEmpty())
+            return false;
+
+        QFile file(source);
+        if (!file.open(QFile::WriteOnly | QFile::Truncate))
+            return false;
+
+        QTextStream out(&file);
+        out << data;
+        file.close();
+         
+        return true;
+    }
+    
+QString AppEngine::readFile(const QString& source)
+    {
+        if (source.isEmpty())
+            return "";
+
+        QFile file(source);
+        if(!file.open(QIODevice::ReadOnly)) {
+            return "";
+        }
+
+        QTextStream in(&file);
+
+        if (!in.atEnd()) {
+        QString line = in.readLine();    
+        return line;
+        }
+        else
+        return "";
+    }    
