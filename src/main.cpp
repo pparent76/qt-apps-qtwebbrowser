@@ -51,16 +51,15 @@ static QObject *engine_factory(QQmlEngine *engine, QJSEngine *scriptEngine)
     return eng;
 }
 
+void ignoreUnixSignals(std::initializer_list<int> ignoreSignals) {
+    // all these signals will be ignored.
+    for (int sig : ignoreSignals)
+        signal(sig, SIG_IGN);
+}
+
+
 int main(int argc, char **argv)
-{   
-    //Handle the signals
-    signal(SIGINT,   SIG_IGN);
-    signal(SIGSEGV,  SIG_IGN); 
-    signal(SIGABRT,  SIG_IGN);  
-    signal(SIGIOT,   SIG_IGN);  
-    signal(SIGILL,   SIG_IGN);  
-    signal(SIGBUS,   SIG_IGN);
-   
+{     
     qputenv("QT_IM_MODULE", QByteArray("qtvirtualkeyboard"));
 
     //do not use any plugins installed on the device
@@ -82,9 +81,9 @@ int main(int argc, char **argv)
     int qAppArgCount = qargv.size();
 
         
-    QGuiApplication app(qAppArgCount, qargv.data());
-        
+    QGuiApplication app(qAppArgCount, qargv.data());     
     QtWebEngine::initialize();
+    ignoreUnixSignals({SIGINT, SIGSEGV, SIGABRT, SIGIOT,SIGILL,SIGBUS});       
 
   
     qmlRegisterType<NavigationHistoryProxyModel>("WebBrowser", 1, 0, "SearchProxyModel");
@@ -103,7 +102,7 @@ int main(int argc, char **argv)
     view.setColor(Qt::black);
     view.setSource(QUrl("qrc:///qml/Main.qml"));
 
-    QObject::connect(view.engine(), SIGNAL(quit()), &app, SLOT(quit()));
+   // QObject::connect(view.engine(), SIGNAL(quit()), &app, SLOT(quit()));
 
 
     view.showMaximized();
